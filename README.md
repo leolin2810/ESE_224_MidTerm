@@ -1,1 +1,1 @@
-# ESE_224_Middterm
+# ESE_224_MidTerm
