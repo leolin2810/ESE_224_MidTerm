@@ -14,3 +14,25 @@ void Probe::testPrint()
     std::cout << "(" << position[0] << ", " << position[1] << ")" << std::endl;
     //   << position << std::endl;
 }
+
+
+// Accessors
+std::string Probe::getName() const {
+    return name;
+}
+
+int Probe::getID() const {
+    return ID;
+}
+
+int Probe::getDimension(int index) const {
+    return dimension[index];
+}
+
+int Probe::getPosition(int index) const {
+    return position[index];
+}
+
+double Probe::getArea() const {
+    return area;
+}
