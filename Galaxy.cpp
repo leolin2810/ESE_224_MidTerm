@@ -1,6 +1,7 @@
 #include "Galaxy.h"
 #include <iostream>
 #include <fstream>
+#include "mergeSort.h"
 using namespace std;
 
 Galaxy::Galaxy() : gala{}
@@ -40,19 +41,60 @@ Probe Galaxy::returnProbe(int index)
 
 void Galaxy::sortByName()
 {
+    for (int i = 0; i < gala.size(); i++){
+        for (int j = 0; j+i < gala.size(); j++){
+            const char* temp1 = gala[i].getName().c_str();
+            const char* temp2 = gala[i+j].getName().c_str();
+            int longestcharcount;
+            gala[i].getName().length() >= gala[i+j].getName().length() ? longestcharcount = gala[i].getName().length(): gala[i+j].getName().length();
+            if (strncasecmp(temp1,temp2,longestcharcount)){
+                Probe temp = gala[i];
+                gala[i] = gala[i+j];
+                gala[i+j] = temp;
+            }
+        }
+    }
+
+    cout << "Current Sort Order" << endl;
+    for (int i = 0; i < gala.size(); i++)
+    {
+        cout << i + 1 << ". " << setw(20) << left << gala[i].getName() << setw(7) << left << "(Name: " << gala[i].getName() << ")" << endl;
+    }
 }
 
 void Galaxy::sortByID()
 {
+    for (int i = 0; i < gala.size(); i++){
+        for (int j = 0; j+i < gala.size(); j++){
+            if (gala[i].getID()>gala[i+j].getID()){
+                Probe temp = gala[i];
+                gala[i] = gala[i+j];
+                gala[i+j] = temp;
+            }
+        }
+    }
+
+    cout << "Current Sort Order" << endl;
+    for (int i = 0; i < gala.size(); i++)
+    {
+        cout << i + 1 << ". " << setw(20) << left << gala[i].getName() << setw(7) << left << "(ID: " << gala[i].getID() << ")" << endl;
+    }
 }
 
 void Galaxy::sortByArea()
 {
+    mergeSort3WayArea(gala, gala.size());
+    cout << "Current Sort Order" << endl;
+    for (int i = 0; i < gala.size(); i++)
+    {
+        cout << i + 1 << ". " << setw(20) << left << gala[i].getName() << setw(7) << left << "(Area: " << gala[i].getArea() << ")" << endl;
+    }
 }
 
 Probe Galaxy::searchProbeByName(const string &name)
 {
-    return Probe();
+    // int indx = find(gala.begin(),gala.end(),name);
+    // return Probe();
 }
 
 Probe Galaxy::searchProbeByID(int id)
@@ -72,6 +114,30 @@ void Galaxy::swapProbeData(int idx1, int idx2)
 
 void Galaxy::insertProbeData(int galaxyIdx, int probeIdx, int value)
 {
+    // int pos = 3;
+    // switch (probeIdx)
+    // {
+    // case 0:
+    //     while (!(pos == 0 || pos == 1))
+    //     {
+    //         cout << "Enter 0 for x, 1 for y: ";
+    //         cin >> pos;
+    //     }
+    //     cout << "Enter the desired value: ";
+    //     cin >> val;
+    //     gala[galaxyIdx].setPosition(pos,val);
+    //     break;
+    // case 1:
+    //     while (!(pos == 0 || pos == 1))
+    //     {
+    //         cout << "Enter 0 for length, 1 for width: ";
+    //         cin >> pos;
+    //     }
+    //     cout << "Enter the desired value: ";
+    //     cin >> val;
+    //     gala[galaxyIdx].setDimension(pos,val);
+    //     break;
+    // }
 }
 
 void Galaxy::copyProbe(int idx1, int idx2)

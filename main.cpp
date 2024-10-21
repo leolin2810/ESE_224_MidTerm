@@ -10,19 +10,22 @@ int main()
 
     g1.addProbe();
     g1.addProbe();
-    
+
+    g1.sortByName();
+    // g1.insertProbeData(0)
+    // g1.addProbe();
+
     // g1.writeGalaxyToFile();
 
     // g1.displayProbe(0);
     // g1.displayProbe(1);
-    
-    
+
     // g1.copyProbe(0,1);
 
     // g1.displayProbe(0);
     // g1.displayProbe(1);
 
-    g1.printAllNames();
+    // g1.printAllNames();
     // g1.displayProbe(1);
 
     // g1.addProbe();
