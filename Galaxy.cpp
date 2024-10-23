@@ -171,19 +171,20 @@ void Galaxy::displayProbe(int idx1)
 void Galaxy::randomizeOrder()
 {
 
-    // // srand(time(NULL));
-    // for (int i = gala.size() - 1; i > 0; i--)
-    // {
-    //     std::mt19937 rng(std::random_device{}());
-    //     std::uniform_int_distribution<> dist(0, gala.size());
+    // srand(time(NULL));
+    for (int i = gala.size() - 1; i > 0; i--)
+    {
+        std::mt19937 rng(std::random_device{}());
+        std::uniform_int_distribution<> dist(0, i);
 
-    //     auto random_number = dist(rng);
-    //     // int j = rand() % (i + 1);
-    //     Probe temp = gala[i];
-    //     gala[i] = gala[j];
-    //     gala[j] = temp;
-    // }
-    // printAllNames();
+        int random_number = dist(rng);
+        int j = random_number;
+        
+        Probe temp = gala[i];
+        gala[i] = gala[j];
+        gala[j] = temp;
+    }
+    printAllNames();
 }
 
 void Galaxy::printAllNames()
