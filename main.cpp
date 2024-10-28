@@ -7,7 +7,7 @@
 using namespace std;
 
 void login(string filename);
-void readProbe(string filename, string name[], int id[], int length[], int width[], int x[], int y[]);
+void readProbe(string filename, Galaxy &a);
 
 int main()
 {
@@ -15,18 +15,22 @@ int main()
     login(filename);              // login function
 
     // Arrays to store probe information
-    string name[10];
-    int ID[10], Length[10], Width[10], xc[10], yc[10];
 
     string probe = "probe.txt";
-    readProbe(probe, name, ID, Length, Width, xc, yc); // reads the probe info into our arrays
+    Galaxy stars;
+    readProbe(probe, stars); // reads the probe info into our arrays
 
     int option;
 
+    string nameget2;
+    int uinput1, uinput2;
+    int probe_location, dimension_or_area, x_or_y, val;
+    int uinput3, uinput4;
+    int uinput;
     // Loop the main menu into an infinite loop and diplay the list of options
     while (1)
     {
-        cout << "Main Menu" << endl;
+        cout << endl <<"Main Menu" << endl;
 
         // list of options
         cout << "1. Sort Probes by Name" << endl;
@@ -36,7 +40,7 @@ int main()
         cout << "5. Print All Probe Names" << endl;
         cout << "6. Search Probe by Name" << endl;
         cout << "7. Search Probe by ID" << endl;
-        cout << "8. Wire Galaxy to File" << endl;
+        cout << "8. Write Galaxy to File" << endl;
         cout << "9. Swap Probe Data" << endl;
         cout << "10. Insert Probe Data" << endl;
         cout << "11. Copy Probe" << endl;
@@ -45,45 +49,74 @@ int main()
 
         cout << "Enter your choice (1-13): ";
         cin >> option; // pass in value from keyboard
-
+        cout << endl;
         // swap to different cases based on value passed into option
         switch (option)
         {
         case 1:
-            cout << "choice 1";
+            stars.sortByName();
             break;
         case 2:
-            cout << "choice 2";
+            stars.sortByID();
             break;
         case 3:
-            cout << "choice 3";
+            stars.sortByArea();
             break;
         case 4:
-            cout << "choice 4";
+            stars.randomizeOrder();
             break;
         case 5:
-            cout << "choice 5";
+            stars.printAllNames();
             break;
         case 6:
-            cout << "choice 6";
+            
+            cout << "Enter the name of the desired Probe name: ";
+            cin >> nameget2;
+            stars.searchProbeByName(nameget2);
             break;
         case 7:
-            cout << "choice 7";
+            int idNum;
+            cout << "Enter the name of the desired Probe ID: ";
+            cin >> idNum;
+            stars.searchProbeByID(idNum);
             break;
         case 8:
-            cout << "choice 8";
+            stars.writeGalaxyToFile();
             break;
         case 9:
-            cout << "choice 9";
+            
+            cout << "Enter the index of the first probe: ";
+            cin >> uinput1;
+            cout << "Enter the index of the second probe: ";
+            cin >> uinput2;
+            stars.swapProbeData(uinput1, uinput2);
             break;
         case 10:
-            cout << "choice 10";
+            
+
+            cout << "Enter the index of the Probe to modify: ";
+            cin >> probe_location;
+            cout<< "Enter 0 to modify the position, Enter 1 to modify the dimension: ";
+            cin >> dimension_or_area;
+            cout << "Enter 0 to modify the x value or length, Enter 1 to modify the y value or width: ";
+            cin >> x_or_y;
+            cout << "Enter the value you'd like to add: ";
+            cin >> val;
+            stars.insertProbeData(probe_location, dimension_or_area, x_or_y, val);
             break;
         case 11:
-            cout << "choice 11";
+            
+            cout << "Enter the index of the first probe: ";
+            cin >> uinput3;
+            cout << "Enter the index of the destination probe: ";
+            cin >> uinput4;
+            stars.copyProbe(uinput4, uinput3);
             break;
         case 12:
-            cout << "choice 12";
+            
+            cout << "Enter the index of the probe you'd like to view: ";
+            cin >> uinput;
+            stars.displayProbe(uinput);
             break;
         case 13:
             cout << "Thank you for using the Galactic Explorer System. Goodbye!";
@@ -145,8 +178,10 @@ Input: filename, probe name, id, length, width, x coordinate and y coordinate
 Effect: Reads the probe information and store it into the arrays we entered
 Output: Nothing
 */
-void readProbe(string filename, string name[], int id[], int length[], int width[], int x[], int y[])
+void readProbe(string filename, Galaxy &a)
 {
+    string tempname;
+    int tempID, templength, tempwidth, tempx, tempy;
     ifstream file(filename);
 
     // check if file opens successfully opens or not
@@ -190,10 +225,12 @@ void readProbe(string filename, string name[], int id[], int length[], int width
         string probe;
 
         // getline to store the name of the probe into name array
-        getline(file, name[i]);
+        getline(file, tempname);
 
         // stores the input file values into other arrays
-        file >> id[i] >> length[i] >> width[i] >> x[i] >> y[i];
+        file >> tempID >> templength >> tempwidth >> tempx >> tempy;
+
+        a.addExistingProbe(Probe(tempname, tempID, templength, tempwidth, tempx, tempy));
     }
 
     file.close(); // close the file

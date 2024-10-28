@@ -5,18 +5,20 @@
 
 using namespace std;
 
-
-class Galaxy {
+class Galaxy
+{
 private:
     vector<Probe> gala;
+
 public:
     Galaxy();
+    void addExistingProbe(Probe a);
     void addProbe();
     Probe returnProbe(int index);
     void sortByName();
     void sortByID();
     void sortByArea();
-    Probe searchProbeByName(const string& name);
+    Probe searchProbeByName(const string &name);
     Probe searchProbeByID(int id);
     void swapProbeData(int idx1, int idx2);
     void insertProbeData(int galaxyIdx, int probeIdx, int pos, int value);
@@ -25,9 +27,6 @@ public:
     void randomizeOrder();
     void printAllNames();
     void writeGalaxyToFile();
-
-
-
 };
 
 #endif // GALAXY_H
