@@ -14,13 +14,14 @@ Galaxy::Galaxy() : gala{}
 {
 }
 
-void Galaxy::addExistingProbe(Probe a){
+void Galaxy::addExistingProbe(Probe a)
+{
     gala.push_back(a);
 }
 /*
 INPUT: VOID
 EFFECT: Prompts the user to enter the details of a probe
-Contructs a Probe based on these parameters, adds it to the end of the 
+Contructs a Probe based on these parameters, adds it to the end of the
 Galaxy objecy
 OUTPUT: Void
 */
@@ -258,6 +259,7 @@ void Galaxy::printAllNames()
         cout << i + 1 << ". " << gala[i].getName() << endl;
     }
 }
+
 /*
 INPUT: None
 EFFECT: Writes to a file called "Galaxy.txt"
@@ -285,4 +287,45 @@ void Galaxy::writeGalaxyToFile()
     }
 
     fou.close();
+}
+
+void Galaxy::addProbeToLinkedList(Probe *probe)
+{
+    if (head == nullptr)
+    {
+        head = probe;
+        cout<< "Added to empty Linked list";
+    }
+    else
+    {
+        Probe *temp = head;
+        while (temp->getNextProbe() != nullptr)
+        {
+            temp = temp->getNextProbe();
+        }
+        temp->setNextProbe(probe);
+        cout<< "Added to not empty Linked list";
+    }
+}
+
+void Galaxy::removeProbeFromLinkedList(int id)
+{
+}
+
+void Galaxy::enqueueProbe(Probe *probe)
+{
+}
+
+Probe *Galaxy::dequeueProbe()
+{
+    return nullptr;
+}
+
+void Galaxy::pushProbe(Probe *probe)
+{
+}
+
+Probe *Galaxy::popProbe()
+{
+    return nullptr;
 }

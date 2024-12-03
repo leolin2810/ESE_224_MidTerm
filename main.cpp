@@ -31,8 +31,10 @@ int main()
     // TEST AREA
 
     Probe a;
-    a.initializeSensorData(3, 3);
-    a.setSensorData(2,4,3);
+    Probe b("a", 3,3,3,3,3);
+    Galaxy stard;
+    stard.addProbeToLinkedList(&a);
+    stard.addProbeToLinkedList(&b);
 
     // Loop the main menu into an infinite loop and diplay the list of options
     while (0) // Switch back to 1 to turn on
