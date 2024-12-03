@@ -12,7 +12,7 @@ void readProbe(string filename, Galaxy &a);
 int main()
 {
     string filename = "user.txt"; // select user.txt as our input file
-    login(filename);              // login function
+    // login(filename);              // login function (uncomment to get login back)
 
     // Arrays to store probe information
 
@@ -27,10 +27,18 @@ int main()
     int probe_location, dimension_or_area, x_or_y, val;
     int uinput3, uinput4;
     int uinput;
+
+    // TEST AREA
+
+    Probe a;
+    a.initializeSensorData(3, 3);
+    a.setSensorData(2,4,3);
+
     // Loop the main menu into an infinite loop and diplay the list of options
-    while (1)
+    while (0) // Switch back to 1 to turn on
     {
-        cout << endl <<"Main Menu" << endl;
+        cout << endl
+             << "Main Menu" << endl;
 
         // list of options
         cout << "1. Sort Probes by Name" << endl;
@@ -69,7 +77,7 @@ int main()
             stars.printAllNames();
             break;
         case 6:
-            
+
             cout << "Enter the name of the desired Probe name: ";
             cin >> nameget2;
             stars.searchProbeByName(nameget2);
@@ -84,7 +92,7 @@ int main()
             stars.writeGalaxyToFile();
             break;
         case 9:
-            
+
             cout << "Enter the index of the first probe: ";
             cin >> uinput1;
             cout << "Enter the index of the second probe: ";
@@ -92,11 +100,10 @@ int main()
             stars.swapProbeData(uinput1, uinput2);
             break;
         case 10:
-            
 
             cout << "Enter the index of the Probe to modify: ";
             cin >> probe_location;
-            cout<< "Enter 0 to modify the position, Enter 1 to modify the dimension: ";
+            cout << "Enter 0 to modify the position, Enter 1 to modify the dimension: ";
             cin >> dimension_or_area;
             cout << "Enter 0 to modify the x value or length, Enter 1 to modify the y value or width: ";
             cin >> x_or_y;
@@ -105,7 +112,7 @@ int main()
             stars.insertProbeData(probe_location, dimension_or_area, x_or_y, val);
             break;
         case 11:
-            
+
             cout << "Enter the index of the first probe: ";
             cin >> uinput3;
             cout << "Enter the index of the destination probe: ";
@@ -113,7 +120,7 @@ int main()
             stars.copyProbe(uinput4, uinput3);
             break;
         case 12:
-            
+
             cout << "Enter the index of the probe you'd like to view: ";
             cin >> uinput;
             stars.displayProbe(uinput);
