@@ -3,22 +3,19 @@
 #include "Galaxy.h"
 #include <fstream>
 #include <string>
+#include "login.h"
 
 using namespace std;
-
-void login(string filename);
-void readProbe(string filename, Galaxy &a);
 
 int main()
 {
     string filename = "user.txt"; // select user.txt as our input file
-    // login(filename);              // login function (uncomment to get login back)
-
+    login(filename);
     // Arrays to store probe information
 
     string probe = "probe.txt";
     Galaxy stars;
-    readProbe(probe, stars); // reads the probe info into our arrays
+    loadProbeFromFile("probe.txt", stars);
 
     int option;
 
@@ -148,111 +145,4 @@ int main()
         }
     }
     return 0;
-}
-
-// Login function
-void login(string name)
-{
-    ifstream file(name); // open input file based on input string name
-
-    // check if the file opens correctly
-    if (file.fail())
-    {
-        cerr << "Fail to open " << name << endl;
-        return;
-    }
-
-    string user, pass;   // two string to store username and password
-    string userarray[2]; // string array to store string from input file
-
-    // loops for 2 iteration
-    for (int i = 0; i < 2; i++)
-    {
-        file >> userarray[i]; // stores the username and password into string array
-    }
-
-    file.close(); // close the input file
-
-    // infinite loop to re-enter the user and password if it's not correct
-    while (1)
-    {
-        cout << "Enter the username: " << endl;
-        cin >> user; // pass in username from keyboard input
-        cout << "Enter the password: " << endl;
-        cin >> pass; // pass in password from keyboard input
-
-        // compare user and pass with string stored in userarray
-        if (user == userarray[0] && pass == userarray[1])
-        {
-            cout << "Login Success..." << endl;
-            break; // break out the infinite loop if user and password are correct
-        }
-        else
-        { // runs the loop again until username and password are correct
-            cout << "Login failed, retry!" << endl;
-        }
-    }
-}
-
-/*
-Input: filename, probe name, id, length, width, x coordinate and y coordinate
-Effect: Reads the probe information and store it into the arrays we entered
-Output: Nothing
-*/
-void readProbe(string filename, Galaxy &a)
-{
-    string tempname;
-    int tempID, templength, tempwidth, tempx, tempy;
-    ifstream file(filename);
-
-    // check if file opens successfully opens or not
-    if (file.fail())
-    {
-        cerr << "Fail to open " << filename << endl;
-        return;
-    }
-
-    // loop for 10 iterations to store 10 probe information
-    for (int i = 0; i < 10; i++)
-    {
-        string line; // used for getline
-
-        string temp = ""; // initialize temporary string
-
-        while (1)
-        {                        // infinite loop
-            getline(file, line); // get the entire line string from the file
-            /*
-            Comparison of line with temporary
-            Store line into temporary string for next comparison
-            If getline gets "\n", we can continue the while loop again
-            */
-            if (line == temp)
-            {
-                temp = line;
-                continue;
-            }
-            /*
-            probe.txt will have # Probe Format before the actual probe information
-            when we getline "# Probe Format", we compare it with any "\n" in between
-            break out the while loop and store the Probe info into arrays
-            */
-            else
-            { // line != temp
-                break;
-            }
-        }
-
-        string probe;
-
-        // getline to store the name of the probe into name array
-        getline(file, tempname);
-
-        // stores the input file values into other arrays
-        file >> tempID >> templength >> tempwidth >> tempx >> tempy;
-
-        a.addExistingProbe(Probe(tempname, tempID, templength, tempwidth, tempx, tempy));
-    }
-
-    file.close(); // close the file
 }

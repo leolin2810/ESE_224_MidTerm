@@ -246,7 +246,7 @@ void Probe::initializeSensorData(int rows, int cols)
 
 /*
 INPUT: 3 ints, the row and the column of the sensorData to be modified, the value to be modified to
-EFFECT: Sets the value at row column to be equal to the user input. Rows and columns are counted from 1, not 0
+EFFECT: Sets the value at row column to be equal to the user input. Rows and columns are counted from 0
 OUTPUT: Void
 */
 void Probe::setSensorData(int row, int col, int value)
@@ -256,7 +256,7 @@ void Probe::setSensorData(int row, int col, int value)
         std::cout << "Entered location is out of range of the sensor.";
         return;
     }
-    sensorData[row - 1][col - 1] = value;
+    sensorData[row][col] = value;
 
     // Uncomment to verify position
     // for (int i = 0; i < sensorRows; i++)
@@ -270,7 +270,7 @@ void Probe::setSensorData(int row, int col, int value)
 }
 
 /*
-INPUT: 2 ints, one specifying the row, the other the column
+INPUT: 2 ints, one specifying the row, the other the column, counts starting from 0
 EFFECT: Will print out a statement if input search vals are out of range
 OUTPUT: -1 if the row and cols are out of range, otherwise the value at the specified position
 */
@@ -281,7 +281,7 @@ int Probe::getSensorData(int row, int col) const
         std::cout << "Entered location is out of range of the sensor.";
         return -1;
     }
-    return sensorData[row - 1][col - 1];
+    return sensorData[row][col];
 }
 
 /*
