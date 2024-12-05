@@ -1,288 +1,141 @@
 #include "Galaxy.h"
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <algorithm>
-#include <random>
-#include "mergeSort.h"
-using namespace std;
 
-/*
-Default Constructor, creates empty vector of Probe
-*/
-Galaxy::Galaxy() : gala{}
-{
-}
+//Constructor, initialize pointers to nullptr
+Galaxy::Galaxy() : head(nullptr), queueFront(nullptr), queueRear(nullptr), stackTop(nullptr), spatialTree(new SpatialTree()) {}
 
-void Galaxy::addExistingProbe(Probe a){
-    gala.push_back(a);
-}
-/*
-INPUT: VOID
-EFFECT: Prompts the user to enter the details of a probe
-Contructs a Probe based on these parameters, adds it to the end of the 
-Galaxy objecy
-OUTPUT: Void
-*/
-void Galaxy::addProbe()
-{
-    string name;
-    int id, dim[2], pos[2];
-
-    cout << "Enter the Probe Name: ";
-    cin >> name;
-    cout << "Enter the Probe ID: ";
-    cin >> id;
-    cout << "Enter the length of the probe: ";
-    cin >> dim[0];
-    cout << "Enter the width of the probe: ";
-    cin >> dim[1];
-    cout << "Enter the x position of the probe: ";
-    cin >> pos[0];
-    cout << "Enter the y position of the probe: ";
-    cin >> pos[1];
-    cout << endl;
-
-    // cout << name << id <<dim[0]<<dim[1]<<pos[0]<<pos[1];
-
-    Probe a(name, id, dim[0], dim[1], pos[0], pos[1]);
-    // cout<< "hit";
-    gala.push_back(a);
-}
-/*
-INPUT: int :index
-EFFECT: None
-OUTPUT: Returns the Probe at the user entered index
-*/
-Probe Galaxy::returnProbe(int index)
-{
-    return gala[index];
-}
-/*
-INPUT: None
-EFFECT: Modifies the vector of probes in alphabetical order
-OUTPUT: None
-*/
-void Galaxy::sortByName()
-{
-    for (int i = 0; i < gala.size(); i++)
-    {
-        for (int j = 0; j + i < gala.size(); j++)
-        {
-            const char *temp1 = gala[i].getName().c_str();
-            const char *temp2 = gala[i + j].getName().c_str();
-            int longestcharcount;
-            gala[i].getName().length() >= gala[i + j].getName().length() ? longestcharcount = gala[i].getName().length() : gala[i + j].getName().length();
-            if (strncasecmp(temp1, temp2, longestcharcount))
-            {
-                Probe temp = gala[i];
-                gala[i] = gala[i + j];
-                gala[i + j] = temp;
-            }
+//Linked list
+//Add probes to the linked list in the order of their IDs.
+void Galaxy::addProbeToLinkedList(Probe* probe) {
+    //Check if list is empty or new probe ID is smaller than the head ID
+    if (!head || head->getID() > probe->getID()) {
+        probe->setNextProbe(head);
+        head = probe;
+    }
+    else { 
+        Probe* current = head;
+        //When current does not satisfy the while loop, exit
+        while (current->getNextProbe() && current->getNextProbe()->getID() < probe->getID()) {
+            current = current->getNextProbe();
         }
-    }
-
-    cout << "Current Sort Order" << endl;
-    for (int i = 0; i < gala.size(); i++)
-    {
-        cout << i + 1 << ". " << setw(20) << left << gala[i].getName() << setw(7) << left << "(Name: " << gala[i].getName() << ")" << endl;
+        //Insert the probe after finding the right position
+        probe->setNextProbe(current->getNextProbe());
+        current->setNextProbe(probe); 
     }
 }
-/*
-INPUT: None
-EFFECT: Modifies the vector of probes in descending order of ID number
-OUTPUT: None
-*/
-void Galaxy::sortByID()
-{
-    for (int i = 0; i < gala.size(); i++)
-    {
-        for (int j = 0; j + i < gala.size(); j++)
-        {
-            if (gala[i].getID() > gala[i + j].getID())
-            {
-                Probe temp = gala[i];
-                gala[i] = gala[i + j];
-                gala[i + j] = temp;
-            }
+
+//Remove a probe from the linked list by its ID.
+void Galaxy::removeProbeFromLinkedList(int id) {
+    Probe* current = head;
+    Probe* previous = nullptr;
+
+    //Traverse the list to find the probe with the given ID
+    while (current && current->getID() != id) {
+        previous = current;
+        current = current->getNextProbe();
+    }
+
+    if (current) { //Found the probe
+        if (previous) { //Linked the previous probe to next
+            previous->setNextProbe(current->getNextProbe());
         }
+        else { //Edge case if the head is being removed, update head
+            head = current->getNextProbe();
+        }
+        delete current; //Remove the probe
     }
+    else { //If probe not found, print error message
+        std::cout << "Probe with ID " << id << " not found in the linked list.\n";
+    }
+}
 
-    cout << "Current Sort Order" << endl;
-    for (int i = 0; i < gala.size(); i++)
-    {
-        cout << i + 1 << ". " << setw(20) << left << gala[i].getName() << setw(7) << left << "(ID: " << gala[i].getID() << ")" << endl;
+//Queue
+//Add a probe to the rear of the queue.
+void Galaxy::enqueueProbe(Probe* probe) {
+    if (!queueRear) {
+        //If the queue is empty, both front and rear point to the new probe
+        queueFront = queueRear = probe;
+    }
+    else { //If not empty
+        queueRear->setNextProbe(probe); //Link current rear to new probe
+        queueRear = probe; //Update rear
     }
 }
-/*
-INPUT: None
-EFFECT: Modifies the vector of probes in descending order of Area
-OUTPUT: None
-*/
-void Galaxy::sortByArea()
-{
-    mergeSort3WayArea(gala, gala.size());
-    cout << "Current Sort Order" << endl;
-    for (int i = 0; i < gala.size(); i++)
-    {
-        cout << i + 1 << ". " << setw(20) << left << gala[i].getName() << setw(7) << left << "(Area: " << gala[i].getArea() << ")" << endl;
-    }
-}
-/*
-INPUT: string: name
-EFFECT: Searches the name in the vector of Probes
-OUTPUT: Returns a default probe if not found, otherwise returns the found probe
-*/
-Probe Galaxy::searchProbeByName(const string &name)
-{
-    auto it = find_if(gala.begin(), gala.end(),
-                      [&name](auto &t)
-                      { return (t.getName() == name); });
-    if (it == gala.end())
-    {
-        cout << "Probe not found" << endl;
-        return Probe(); // temp return val
-    }
-    Probe a = *it;
-    a.displayProbe();
-    return a;
-}
-/*
-INPUT: int : ID Number
-EFFECT: Searches the ID in the vector of Probes
-OUTPUT: Returns a default probe if not found, otherwise returns the found probe
-*/
-Probe Galaxy::searchProbeByID(int id)
-{
-    auto it = find_if(gala.begin(), gala.end(),
-                      [&id](auto &t)
-                      { return (t.getID() == id); });
-    if (it == gala.end())
-    {
-        cout << "Probe not found" << endl;
-        return Probe(); // temp return val
-    }
-    Probe a = *it;
-    a.displayProbe();
-    return a;
-}
-/*
-INPUT: int: index of first probe, int: index of second probe
-EFFECT: swaps the position and dimension of the Probes
-OUTPUT: Void
-*/
-void Galaxy::swapProbeData(int idx1, int idx2)
-{
-    if (idx2 > gala.size() - 1 || idx1 > gala.size() - 1)
-    {
-        cerr << "Input index was out of range";
-        return;
-    }
-    gala[idx1] - gala[idx2];
-}
-/*
-INPUT: int: index of probe, int: chooses to modify dimension or position,
-int: chooses x or y if probeIdx was 0, chooses length or width if probeIdx was 1,
-int: value to be added at that location
-EFFECT: Modifies the specified data at the specified point
-OUTPUT: None
-*/
-void Galaxy::insertProbeData(int galaxyIdx, int probeIdx, int pos, int value)
-{
-    switch (probeIdx)
-    {
-    case 0:
-        gala[galaxyIdx].setPosition(pos, value);
-        break;
-    case 1:
-        gala[galaxyIdx].setDimension(pos, value);
-        break;
-    }
-}
-/*
-INPUT: int: index of probe 1, int: index of probe 2
-EFFECT: Copies the dimension data and position data from probe at idx2 to idx1
-OUTPUT: None
-*/
-void Galaxy::copyProbe(int idx1, int idx2)
-{
-    if (idx2 > gala.size() - 1 || idx1 > gala.size() - 1)
-    {
-        cerr << "Input index was out of range";
-        return;
-    }
-    gala[idx1] << gala[idx2];
-}
-/*
-INPUT: int: index of desired probe
-EFFECT: prints out at all data of the probe
-OUTPUT: None
-*/
-void Galaxy::displayProbe(int idx1)
-{
-    gala[idx1].displayProbe();
-}
-/*
-INPUT: None
-EFFECT: Modifies the vector of probes to a random order
-OUTPUT: None
-*/
-void Galaxy::randomizeOrder()
-{
 
-    // srand(time(NULL));
-    for (int i = gala.size() - 1; i > 0; i--)
-    {
-        std::mt19937 rng(std::random_device{}());
-        std::uniform_int_distribution<> dist(0, i);
+//Remove a probe from the front of the queue and return it
+Probe* Galaxy::dequeueProbe() {
+    if (!queueFront) return nullptr; //Return null if queue is empty
 
-        int random_number = dist(rng);
-        int j = random_number;
+    Probe* temp = queueFront; //Save front queue for return
+    queueFront = queueFront->getNextProbe(); //Update the front of the queue to point to the next probe
 
-        Probe temp = gala[i];
-        gala[i] = gala[j];
-        gala[j] = temp;
-    }
-    printAllNames();
+    if (!queueFront) queueRear = nullptr; //If queue is empty, set rear to nullptr
+
+    temp->setNextProbe(nullptr);  //Disconnect the probe from the queue
+    return temp; //Return front queue
 }
-/*
-INPUT: None
-EFFECT: Prints the names of all the probes
-OUTPUT: None
-*/
-void Galaxy::printAllNames()
-{
-    cout << "All Probe Names" << endl;
-    for (int i = 0; i < gala.size(); i++)
-    {
-        cout << i + 1 << ". " << gala[i].getName() << endl;
+
+//Stack
+//Push a probe onto the stack
+void Galaxy::pushProbe(Probe* probe) {
+    probe->setNextProbe(stackTop); //Link the new probe to the current top of the stack
+    stackTop = probe; //Update the top of the stack
+}
+
+//Pop a probe from the top of the stack and return it
+Probe* Galaxy::popProbe() {
+    if (!stackTop) return nullptr; //Return null if stack is empty
+
+    Probe* temp = stackTop; //Save top stack for return
+    stackTop = stackTop->getNextProbe(); //Update the top to the next pointer
+
+    temp->setNextProbe(nullptr);  //Disconnect from the stack
+    return temp; //Return saved stack
+}
+
+//SpatialTree management
+//Insert a probe into the SpatialTree based on its position.
+void Galaxy::insertProbeSpatialTree(Probe* probe) {
+    spatialTree->insert(probe);
+}
+
+//Search for a probe by its (x, y) position.
+Probe* Galaxy::searchProbeSpatialTree(int x, int y) {
+    return spatialTree->search(x, y);
+}
+
+//Traverse inorder and display the probe
+void Galaxy::traverseSpatialTreeInorder() {
+    spatialTree->traverseInOrder();
+}
+
+//Traverse preorder and display the probe
+void Galaxy::traverseSpatialTreePreorder() {
+    spatialTree->traversePreOrder();
+}
+
+//Traveerse postorder and display the probe
+void Galaxy::traverseSpatialTreePostorder() {
+    spatialTree->traversePostOrder();
+}
+
+//Display all probes in the Galaxy
+void Galaxy::displayAllProbes() const {
+    Probe* current = head;
+    while (current) {
+        current->displayProbe();
+        current = current->getNextProbe();
     }
 }
-/*
-INPUT: None
-EFFECT: Writes to a file called "Galaxy.txt"
-Each probe is written in format
-------------
-Name
-ID
-Length Width
-X Y
 
-------------
-OUTPUT: None
-*/
-void Galaxy::writeGalaxyToFile()
-{
-    ofstream fou("Galaxy.txt");
-
-    for (int i = 0; i < gala.size(); i++)
-    {
-        fou << gala[i].getName() << endl;
-        fou << gala[i].getID() << endl;
-        fou << gala[i].getDimension(0) << " " << gala[i].getDimension(0) << endl;
-        fou << gala[i].getPosition(0) << " " << gala[i].getPosition(1) << endl
-            << endl;
+//Destructor
+Galaxy::~Galaxy() {
+    //Clean up linked list
+    Probe* current = head;
+    while (current) {
+        Probe* next = current->getNextProbe();
+        delete current;
+        current = next;
     }
-
-    fou.close();
+    delete spatialTree;
 }
