@@ -294,7 +294,7 @@ void Galaxy::addProbeToLinkedList(Probe *probe)
     if (head == nullptr)
     {
         head = probe;
-        cout<< "Added to empty Linked list";
+        // cout<< "Added to empty Linked list";
     }
     else
     {
@@ -304,28 +304,140 @@ void Galaxy::addProbeToLinkedList(Probe *probe)
             temp = temp->getNextProbe();
         }
         temp->setNextProbe(probe);
-        cout<< "Added to not empty Linked list";
+        // cout<< "Added to not empty Linked list";
     }
 }
 
+/*
+********IMPORTANT**********
+THE PROBE MUST BE ADDED TO THE VECTOR OF PROBES IN ORDER TO BE FOUND
+THE LINKED LIST AND VECTOR OF PROBES ARE SEPARATE
+ADD TO BOTH OF THEM FOR THIS FUNCTION TO WORK
+DEPENDENCT ON GETID METHOD FROM GALAXY
+
+INPUT: ID number of the desired probe to be removed
+EFFECT:
+3 possible effects
+Linked list is empty -> Prints out a statement saying so, returning
+
+Given ID is NOT a valid option -> GETID method will print not found, returns
+
+Item with given ID is removed from linked list
+OUTPUT: Void
+
+*/
 void Galaxy::removeProbeFromLinkedList(int id)
 {
-}
+    if (head == nullptr)
+    {
+        cout << "Linked list is empty" << endl;
+        return;
+    }
 
+    Probe check = searchProbeByID(id);
+    int validID = check.getID();
+    if (validID == -1)
+    {
+        // cout << "Given ID is not a probe on the list.";
+        return;
+    }
+
+    Probe *prev = nullptr;
+    Probe *temp = new Probe(*head);
+
+    // Traverse the list to find the node to delete
+    while (temp != nullptr && temp->getID() != id)
+    {
+        prev = temp;
+        temp = temp->getNextProbe();
+    }
+    // Unlink the node
+    prev->setNextProbe(temp->getNextProbe());
+    head = temp->getNextProbe();
+
+    if (temp != nullptr && temp->getID() == id)
+    {
+        temp = nullptr;
+        delete temp;
+        return;
+    }
+}
+/*
+INPUT: Pointer to a probe
+EFFECT: Adds a probe to the back of the queue
+OUTPUT: Void
+*/
 void Galaxy::enqueueProbe(Probe *probe)
 {
+    if (queueFront == nullptr)
+    {
+        // cout << probe->getName() << " was added to an empty queue." << endl;
+        queueFront = probe;
+        queueRear = probe;
+    }
+    else
+    {
+        // cout << probe->getName() << " was added to an non-empty queue." << endl;
+        queueRear->setNextProbe(probe);
+        queueRear = probe;
+    }
 }
 
+/*
+INPUT: Void
+EFFECT: Removes the Probe at the start of the queue
+OUTPUT: A pointer to a copy of the removed Probe
+*/
 Probe *Galaxy::dequeueProbe()
 {
-    return nullptr;
+    if (queueFront == nullptr)
+    {
+        // cout << "Can't dequeue from an empty queue." << endl;
+        return nullptr;
+    }
+    Probe *temp = new Probe(*queueFront);
+    Probe b = *temp;
+    Probe *x = &b;
+    queueFront = queueFront->getNextProbe();
+    if (queueFront == nullptr)
+    {
+        queueRear = nullptr;
+    }
+    // cout << temp->getName() << " was removed from the queue." << endl;
+    delete temp;
+    return x;
 }
 
+/*
+INPUT: Pointer to probe
+EFFECT: Probe is added to the top of the stack
+OUTPUT: Void
+*/
 void Galaxy::pushProbe(Probe *probe)
 {
+    Probe *newProbe = new Probe(*probe);
+    newProbe->setNextProbe(stackTop);
+    stackTop = newProbe;
+    // cout << stackTop->getName() << " is the new item at the top of the stack" << endl;
 }
 
+/*
+INPUT: Void
+EFFECT: Probe is removed from the top of the stack, Probe added right before is set as new stackTop
+OUTPUT: Pointer to a copy of the popped probe
+*/
 Probe *Galaxy::popProbe()
 {
-    return nullptr;
+    if (stackTop == nullptr)
+    {
+        cout << "Stack is Empty" << endl;
+        return nullptr;
+    }
+    Probe *temp = new Probe(*stackTop);
+    Probe b = *temp;
+    Probe *x = &b;
+    stackTop->setNextProbe(stackTop->getNextProbe());
+    // delete temp;
+    cout << x->getName() << " was popped out of the stack." << endl;
+    return x;
 }

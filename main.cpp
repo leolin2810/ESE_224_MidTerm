@@ -30,11 +30,23 @@ int main()
 
     // TEST AREA
 
-    Probe a;
-    Probe b("a", 3,3,3,3,3);
+    Probe a("Probe1", 1, 2, 3, 4, 5);
+    Probe b("Probe2", 3, 3, 3, 3, 3);
     Galaxy stard;
+    stard.addExistingProbe(a);
+    stard.addExistingProbe(b);
+    stard.removeProbeFromLinkedList(3);
     stard.addProbeToLinkedList(&a);
     stard.addProbeToLinkedList(&b);
+    stard.removeProbeFromLinkedList(3); // Error present in delete
+    stard.dequeueProbe();
+    stard.enqueueProbe(&b);
+    stard.enqueueProbe(&a);
+    stard.dequeueProbe();
+    stard.pushProbe(&a);
+    stard.pushProbe(&b);
+    stard.popProbe();
+    cout << "hi";
 
     // Loop the main menu into an infinite loop and diplay the list of options
     while (0) // Switch back to 1 to turn on
