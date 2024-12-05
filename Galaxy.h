@@ -13,6 +13,8 @@ private:
     Probe *queueFront = nullptr;
     Probe *queueRear = nullptr;
     Probe *stackTop = nullptr;
+  //BinaryTree for spatial management
+    SpatialTree* spatialTree;
 
 public:
     // Default Constructor
@@ -48,6 +50,15 @@ public:
     Probe *dequeueProbe();
     void pushProbe(Probe *probe);
     Probe *popProbe();
+  
+  //SpatialTree methods
+    void insertProbeSpatialTree(Probe* probe);
+    Probe* searchProbeSpatialTree(int x, int y);
+    void traverseSpatialTreeInorder();
+    void traverseSpatialTreePreorder();
+    void traverseSpatialTreePostorder();
+  
+  ~Galaxy();  //Destructor
 };
 
 #endif // GALAXY_H
