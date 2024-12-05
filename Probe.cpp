@@ -161,6 +161,10 @@ void Probe::operator<<(const Probe &p2)
     position[0] = p2.position[0];
     position[1] = p2.position[1];
     area = p2.area;
+    sensorRows = p2.sensorRows;
+    sensorCols = p2.sensorCols;
+    sensorData = p2.sensorData;
+    nextProbe = p2.nextProbe;
 }
 
 /*
@@ -174,6 +178,16 @@ void Probe::operator-(Probe &p2)
     std::swap(dimension[1], p2.dimension[1]);
     std::swap(position[0], p2.position[0]);
     std::swap(position[1], p2.position[1]);
+    int temp = sensorRows;
+    sensorRows = p2.sensorRows;
+    p2.sensorRows = temp;
+
+    temp = sensorCols;
+    sensorCols = p2.sensorCols;
+    p2.sensorCols = temp;
+
+    // Swap sensor data
+    sensorData.swap(p2.sensorData);
     calculateArea();
     p2.calculateArea();
 }
@@ -218,7 +232,6 @@ void Probe::initializeSensorData(int rows, int cols)
 
     sensorData.resize(rows, std::vector<int>(cols));
 
-
     // Uncomment below to verify sensorData size
     // for (int i = 0; i < sensorRows; i++)
     // {
@@ -238,11 +251,12 @@ OUTPUT: Void
 */
 void Probe::setSensorData(int row, int col, int value)
 {
-    if (row < 0 || row>sensorRows || col < 0 || col > sensorCols){
+    if (row < 0 || row > sensorRows || col < 0 || col > sensorCols)
+    {
         std::cout << "Entered location is out of range of the sensor.";
         return;
     }
-    sensorData[row-1][col-1] = value;
+    sensorData[row - 1][col - 1] = value;
 
     // Uncomment to verify position
     // for (int i = 0; i < sensorRows; i++)
@@ -262,13 +276,13 @@ OUTPUT: -1 if the row and cols are out of range, otherwise the value at the spec
 */
 int Probe::getSensorData(int row, int col) const
 {
-    if (row <= 0 || row>sensorRows || col <= 0 || col > sensorCols){
+    if (row <= 0 || row > sensorRows || col <= 0 || col > sensorCols)
+    {
         std::cout << "Entered location is out of range of the sensor.";
         return -1;
     }
-    return sensorData[row-1][col-1];
+    return sensorData[row - 1][col - 1];
 }
-
 
 /*
 INPUT: 1 Probe Pointer
@@ -279,7 +293,6 @@ void Probe::setNextProbe(Probe *next)
 {
     nextProbe = next;
 }
-
 
 /*
 INPUT: void
