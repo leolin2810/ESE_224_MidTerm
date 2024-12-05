@@ -1,32 +1,24 @@
-//
-//  Probe.hpp
-//  FinalProject
-//
-//  Created by Qiang Ou on 11/30/24.
-//
-
 #ifndef PROBE_H
 #define PROBE_H
-
-#include "spaceObject.h"
 #include <string>
+#include <iostream>
 #include <vector>
-
-class Probe : public SpaceObject {
+#include "spaceObject.h"
+class Probe : public SpaceObject
+{
 private:
     std::string name;
-    int ID;
-    int dimension[2]; // Represents length and width
+    int ID, dimension[2], position[2];
     double area;
-    int position[2]; // Represents x and y coordinates
+
     std::vector<std::vector<int>> sensorData;
     int sensorRows, sensorCols;
-    Probe* nextProbe;
+    Probe *nextProbe = nullptr;
 
 public:
-    // Constructors
     Probe();
     Probe(std::string n, int id, int length, int width, int x, int y);
+    void testPrint();
 
     // Accessors
     std::string getName() const;
@@ -44,21 +36,24 @@ public:
     // Methods
     void calculateArea();
     void displayProbe() const;
-    void move() override;
-    void displayInfo() const override; //ADDED THIS FUNCTION TO TEST OUT MAIN
 
-    // Sensor data methods
+    // Overloaded operators
+    void operator<<(const Probe &p2);
+    void operator-(Probe &p2);
+
+    // Override methods
+    void move() override;
+    void displayInfo() override;
+
+    // Sensor Initialization
     void initializeSensorData(int rows, int cols);
     void setSensorData(int row, int col, int value);
     int getSensorData(int row, int col) const;
 
-    // Linked list management
+    // Linked List management
     void setNextProbe(Probe* next);
     Probe* getNextProbe() const;
-
-    // Overloaded operators
-    void operator<<(const Probe& p2);
-    void operator-(Probe& p2);
 };
 
-#endif
+#endif // PROBE_H
+

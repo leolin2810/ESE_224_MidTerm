@@ -1,3 +1,4 @@
+
 //
 //  spaceObject.h
 //  FinalProject
@@ -8,12 +9,14 @@
 #ifndef SPACEOBJECT_H
 #define SPACEOBJECT_H
 
-class SpaceObject {
+class SpaceObject
+{
 public:
-    virtual void move() = 0;               // Pure virtual function for movement
-    virtual void displayInfo() const = 0;  // Pure virtual function for displaying object information
-
-    virtual ~SpaceObject() = default;      // Virtual destructor for proper cleanup of derived classes
+    virtual void move() = 0;
+    virtual void displayInfo() = 0;
+  
+  virtual ~SpaceObject() = default;
 };
 
-#endif
+#endif //SPACEOBJECT_H
+
