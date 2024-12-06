@@ -371,13 +371,13 @@ void Galaxy::enqueueProbe(Probe *probe)
 {
     if (queueFront == nullptr)
     {
-        // cout << probe->getName() << " was added to an empty queue." << endl;
+        cout << probe->getName() << " was added to an empty queue." << endl;
         queueFront = probe;
         queueRear = probe;
     }
     else
     {
-        // cout << probe->getName() << " was added to an non-empty queue." << endl;
+        cout << probe->getName() << " was added to an non-empty queue." << endl;
         queueRear->setNextProbe(probe);
         queueRear = probe;
     }

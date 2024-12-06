@@ -5,18 +5,19 @@
 #include <fstream>
 #include <string>
 #include "login.h"
+#include "spcobjmnger_Test.h"
 
 using namespace std;
 
 int main()
 {
-    // string filename = "user.txt"; // select user.txt as our input file
+    string filename = "user.txt"; // select user.txt as our input file
     // login(filename);
     // Arrays to store probe information
 
-    // string probe = "probe.txt";
+    string probe = "probe.txt";
     Galaxy stars;
-    // loadProbeFromFile("probe.txt", stars);
+    loadProbeFromFile("probe.txt", stars);
 
     int option;
 
@@ -25,49 +26,10 @@ int main()
     int probe_location, dimension_or_area, x_or_y, val;
     int uinput3, uinput4;
     int uinput;
+    bool isValid = false;
 
-    // TEST AREA for spaceObjectManager
+    // test(); function to verify spaceObjectManager functionality
 
-    // Variable Declaration
-    Probe a("ZgoesLast", 1, 2, 3, 4, 5);
-    Probe b("AgoesFirst", 3, 3, 3, 3, 3);
-    Probe c("Monkey", 0, 15, 25, 3, 3);
-    SpaceObjectManager<Probe> stard;
-    Probe *a_p = &a;
-    Probe *b_p = &b;
-    Probe *c_p = &c;
-
-    // Check For proper object addition
-    stard.addObject(a_p);
-    stard.addObject(b_p);
-    stard.addObject(c_p);
-    stard.printAllProbeNames();
-
-    // Check sorting by Name
-    stard.sortProbesByName();
-    cout << "(NameSort) ";
-    stard.printAllProbeNames();
-
-    // Check sorting by ID
-    stard.sortProbesByID();
-    cout << "(IDSort) ";
-    stard.printAllProbeNames();
-
-    // Check sorting by Area
-    stard.sortProbesByArea();
-    cout << "(AreaSort) ";
-    stard.printAllProbeNames();
-
-    // Check search functionality
-    cout << "(Search for \"abc\") " <<endl;
-    stard.searchProbeByName("abc");
-    cout << "(Search for \"ZgoesLast\") " << endl;
-    stard.searchProbeByName("ZgoesLast");
-
-    // Check for randomization
-    stard.randomizeProbeOrder();
-    cout << "(RandomizedSort) ";
-    stard.printAllProbeNames();
     // stard.getTree()->insert(&a);
     // stard.getTree()->insert(&b);
     // stard.getTree()->traverseInOrder();
@@ -75,7 +37,7 @@ int main()
     // stard.getTree()->traversePostOrder();
 
     // Loop the main menu into an infinite loop and diplay the list of options
-    while (0) // Switch back to 1 to turn on
+    while (1) // Switch back to 1 to turn on
     {
         cout << endl
              << "Main Menu" << endl;
@@ -93,7 +55,9 @@ int main()
         cout << "10. Insert Probe Data" << endl;
         cout << "11. Copy Probe" << endl;
         cout << "12. Display Probe" << endl;
-        cout << "13. Quit" << endl;
+        cout << "13. Test LinkedList" << endl;
+        cout << "14. Test template function spaceObjectManager functionality" << endl;
+        cout << "15. Quit" << endl;
 
         cout << "Enter your choice (1-13): ";
         cin >> option; // pass in value from keyboard
@@ -166,6 +130,24 @@ int main()
             stars.displayProbe(uinput);
             break;
         case 13:
+            cout << "What would you like to do with the linked list? \n(Note: Linked list is empty upon intialization) \n";
+            cout << "1. Add to linked list\n";
+            cout << "2. Remove from linked list\n";
+            uinput = 0;
+            
+ 
+            cout << "Enter a choice: \n";
+            cin >> uinput;
+            cout << uinput;
+            
+            if ((uinput != 1) || (uinput != 2)){
+                cout << "Invalid option\n";
+                break;
+            }
+        case 14:
+            test();
+            break;
+        case 15:
             cout << "Thank you for using the Galactic Explorer System. Goodbye!";
             exit(1); // exit out the system
         default:
