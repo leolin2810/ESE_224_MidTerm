@@ -1,4 +1,5 @@
 #include <iostream>
+#include "spaceObjectManager.h"
 #include "Probe.h"
 #include "Galaxy.h"
 #include <fstream>
@@ -11,7 +12,7 @@ int main()
 {
     // string filename = "user.txt"; // select user.txt as our input file
     // login(filename);
-    // // Arrays to store probe information
+    // Arrays to store probe information
 
     // string probe = "probe.txt";
     Galaxy stars;
@@ -25,17 +26,53 @@ int main()
     int uinput3, uinput4;
     int uinput;
 
-    // TEST AREA
+    // TEST AREA for spaceObjectManager
 
-    Probe a("Probe1", 1, 2, 3, 4, 5);
-    Probe b("Probe2", 3, 3, 3, 3, 3);
-    Galaxy stard;
+    // Variable Declaration
+    Probe a("ZgoesLast", 1, 2, 3, 4, 5);
+    Probe b("AgoesFirst", 3, 3, 3, 3, 3);
+    Probe c("Monkey", 0, 15, 25, 3, 3);
+    SpaceObjectManager<Probe> stard;
+    Probe *a_p = &a;
+    Probe *b_p = &b;
+    Probe *c_p = &c;
+
+    // Check For proper object addition
+    stard.addObject(a_p);
+    stard.addObject(b_p);
+    stard.addObject(c_p);
+    stard.printAllProbeNames();
+
+    // Check sorting by Name
+    stard.sortProbesByName();
+    cout << "(NameSort) ";
+    stard.printAllProbeNames();
+
+    // Check sorting by ID
+    stard.sortProbesByID();
+    cout << "(IDSort) ";
+    stard.printAllProbeNames();
+
+    // Check sorting by Area
+    stard.sortProbesByArea();
+    cout << "(AreaSort) ";
+    stard.printAllProbeNames();
+
+    // Check search functionality
+    cout << "(Search for \"abc\") " <<endl;
+    stard.searchProbeByName("abc");
+    cout << "(Search for \"ZgoesLast\") " << endl;
+    stard.searchProbeByName("ZgoesLast");
+
+    // Check for randomization
+    stard.randomizeProbeOrder();
+    cout << "(RandomizedSort) ";
+    stard.printAllProbeNames();
     // stard.getTree()->insert(&a);
     // stard.getTree()->insert(&b);
     // stard.getTree()->traverseInOrder();
     // stard.getTree()->traversePreOrder();
     // stard.getTree()->traversePostOrder();
-    cout << "hi";
 
     // Loop the main menu into an infinite loop and diplay the list of options
     while (0) // Switch back to 1 to turn on

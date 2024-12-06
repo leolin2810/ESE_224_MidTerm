@@ -13,4 +13,4 @@ void loadProbeFromFile(const string& filename, Galaxy& galaxy);
 void login(const string filename);
 
 
-#endif // !LOGIN_H
+#endif // LOGIN_H

@@ -91,7 +91,7 @@ void Galaxy::sortByName()
 }
 /*
 INPUT: None
-EFFECT: Modifies the vector of probes in descending order of ID number
+EFFECT: Modifies the vector of probes in ascending order of ID number
 OUTPUT: None
 */
 void Galaxy::sortByID()
