@@ -6,6 +6,7 @@
 #include <string>
 #include "login.h"
 #include "spcobjmnger_Test.h"
+#include <typeinfo> // 
 
 using namespace std;
 
@@ -27,6 +28,8 @@ int main()
     int uinput3, uinput4;
     int uinput;
     bool isValid = false;
+    int idNum;
+  
 
     // test(); function to verify spaceObjectManager functionality
 
@@ -56,11 +59,13 @@ int main()
         cout << "11. Copy Probe" << endl;
         cout << "12. Display Probe" << endl;
         cout << "13. Test LinkedList" << endl;
-        cout << "14. Test template function spaceObjectManager functionality" << endl;
-        cout << "15. Quit" << endl;
+        cout << "14. Test queue functions" << endl;
+        cout << "15. Test template function spaceObjectManager functionality" << endl;
+        cout << "16. Quit" << endl;
 
         cout << "Enter your choice (1-13): ";
-        cin >> option; // pass in value from keyboard
+        // cin >> option; // pass in value from keyboard
+        option = 13;
         cout << endl;
         // swap to different cases based on value passed into option
         switch (option)
@@ -87,7 +92,6 @@ int main()
             stars.searchProbeByName(nameget2);
             break;
         case 7:
-            int idNum;
             cout << "Enter the name of the desired Probe ID: ";
             cin >> idNum;
             stars.searchProbeByID(idNum);
@@ -133,21 +137,69 @@ int main()
             cout << "What would you like to do with the linked list? \n(Note: Linked list is empty upon intialization) \n";
             cout << "1. Add to linked list\n";
             cout << "2. Remove from linked list\n";
-            uinput = 0;
-            
- 
+
             cout << "Enter a choice: \n";
             cin >> uinput;
-            cout << uinput;
-            
-            if ((uinput != 1) || (uinput != 2)){
+            // cout <<typeid(uinput).name();
+            // cout << uinput;
+
+            if ((uinput != 1) && (uinput != 2))
+            {
                 cout << "Invalid option\n";
                 break;
             }
+
+            if (uinput == 1)
+            {
+                cout << "Enter the name of the probe you want to add: \n(Probes must first exist in the vector of probes to be added)\n";
+                cin >> nameget2;
+                Probe *temp = new Probe(stars.searchProbeByName(nameget2));
+                stars.addProbeToLinkedList(temp);
+                delete temp;
+                break;
+            }
+            else
+            {
+                cout << "Enter the id of the probe you want to remove: ";
+                cin >> idNum;
+                stars.removeProbeFromLinkedList(idNum);
+                break;
+            }
         case 14:
-            test();
+        cout << "What would you like to do with the Queue? \n(Note: Queue is empty upon intialization) \n";
+            cout << "1. Enqueue\n";
+            cout << "2. Dequeue\n";
+            // uinput = 0;
+
+            cout << "Enter a choice: \n";
+            cin >> uinput;
+            // cout << uinput;
+
+            if ((uinput != 1) && (uinput != 2))
+            {
+                cout << "Invalid option\n";
+                break;
+            }
+
+            if (uinput == 1)
+            {
+                cout << "Enter the name of the probe you want to add: \n(Default Probes can be added if invalid name is entered)\n";
+                cin >> nameget2;
+                Probe *temp = new Probe(stars.searchProbeByName(nameget2));
+                stars.enqueueProbe(temp);
+                delete temp;
+                break;
+            }
+            else
+            {
+                cout << stars.dequeueProbe() << " has been dequeued.\n";
+                break;
+            }
             break;
         case 15:
+            test();
+            break;
+        case 16:
             cout << "Thank you for using the Galactic Explorer System. Goodbye!";
             exit(1); // exit out the system
         default:

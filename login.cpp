@@ -29,8 +29,9 @@ void loadProbeFromFile(const string &filename, Galaxy &galaxy)
         // Read the probe data with proper handling of commas
         ss >> id >> comma;      // Read ID and skip the comma
         getline(ss, name, ','); // Read name until the next comma
+        // cout << "\"" <<name<<"\"";
         ss >> x >> comma >> y >> comma >> sensorRows >> comma >> sensorCols;
-
+        name.erase (std::remove (name.begin(), name.end(), ' '), name.end());
         // Create the Probe object
         Probe *probe = new Probe(name, id, sensorRows, sensorCols, x, y);
         probe->initializeSensorData(sensorRows, sensorCols);

@@ -136,6 +136,16 @@ OUTPUT: Returns a default probe if not found, otherwise returns the found probe
 */
 Probe Galaxy::searchProbeByName(const string &name)
 {
+    // for (int i = 0; i < gala.size(); i++)
+    // {
+    //     if (gala[i].getName() == name)
+    //     {
+    //         gala[i].displayProbe();
+    //         return gala[i];
+    //     }
+    // }
+    // cout << "Probe not found" << endl;
+    // return Probe(); // temp return val
     auto it = find_if(gala.begin(), gala.end(),
                       [&name](auto &t)
                       { return (t.getName() == name); });
@@ -338,12 +348,18 @@ void Galaxy::removeProbeFromLinkedList(int id)
     int validID = check.getID();
     if (validID == -1)
     {
-        // cout << "Given ID is not a probe on the list.";
+        cout << "Given ID is not a probe on the list.";
         return;
     }
-
+    // cout << "hi";
     Probe *prev = nullptr;
-    Probe *temp = new Probe(*head);
+    Probe *temp = head;
+
+    if (temp != nullptr && temp->getID() == id) {
+        head = temp->getNextProbe(); // Changed head
+        delete temp;         // Free old head
+        return;
+    }
 
     // Traverse the list to find the node to delete
     while (temp != nullptr && temp->getID() != id)
@@ -351,16 +367,20 @@ void Galaxy::removeProbeFromLinkedList(int id)
         prev = temp;
         temp = temp->getNextProbe();
     }
+    // cout << "reached b4 link";
     // Unlink the node
-    prev->setNextProbe(temp->getNextProbe());
-    head = temp->getNextProbe();
 
+    prev->setNextProbe (temp->getNextProbe());
+    cout << "boo";
+    head = temp->getNextProbe();
+    cout << "after link";
     if (temp != nullptr && temp->getID() == id)
     {
         temp = nullptr;
         delete temp;
         return;
     }
+    // cout << "reached end";
 }
 /*
 INPUT: Pointer to a probe
