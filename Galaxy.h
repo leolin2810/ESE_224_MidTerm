@@ -1,6 +1,7 @@
 #ifndef GALAXY_H
 #define GALAXY_H
 #include "Probe.h"
+#include "SpatialTree.h"
 #include <vector>
 
 using namespace std;
@@ -13,6 +14,8 @@ private:
     Probe *queueFront = nullptr;
     Probe *queueRear = nullptr;
     Probe *stackTop = nullptr;
+
+    SpatialTree *tree;
 
 public:
     // Default Constructor
@@ -48,6 +51,9 @@ public:
     Probe *dequeueProbe();
     void pushProbe(Probe *probe);
     Probe *popProbe();
+
+    SpatialTree *getTree();
+    ~Galaxy();
 };
 
 #endif // GALAXY_H

@@ -441,3 +441,22 @@ Probe *Galaxy::popProbe()
     cout << x->getName() << " was popped out of the stack." << endl;
     return x;
 }
+
+SpatialTree *Galaxy::getTree()
+{
+    return tree;
+}
+
+Galaxy::~Galaxy()
+{
+    // Clean up linked list
+    Probe *current = head;
+    while (current)
+    {
+        Probe *next = current->getNextProbe();
+        delete current;
+        current = next;
+    }
+
+    delete tree;
+}

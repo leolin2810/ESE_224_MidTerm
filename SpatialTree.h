@@ -3,45 +3,46 @@
 
 #include "Probe.h"
 
-class SpatialNode {
+class SpatialNode
+{
 public:
-    Probe* probe;
-    SpatialNode* left;
-    SpatialNode* right;
+    Probe *probe;
+    SpatialNode *left;
+    SpatialNode *right;
 
-    //Constructor
-    SpatialNode(Probe* p) : probe(p), left(nullptr), right(nullptr) {}
+    // Constructor
+    SpatialNode(Probe *p) : probe(p), left(nullptr), right(nullptr) {}
 };
 
-class SpatialTree {
+class SpatialTree
+{
 private:
-    SpatialNode* root;
+    SpatialNode *root;
+    // Helper functions
+    SpatialNode *insertHelper(SpatialNode *node, Probe *probe);
+    SpatialNode *searchHelper(SpatialNode *node, int x, int y);
+    void traverseInOrderHelper(SpatialNode *node);   // Inorder
+    void traversePreOrderHelper(SpatialNode *node);  // Preorder
+    void traversePostOrderHelper(SpatialNode *node); // Postorder
 
-    //Helper functions
-    SpatialNode* insertHelper(SpatialNode* node, Probe* probe);
-    SpatialNode* searchHelper(SpatialNode* node, int x, int y);
-    void traverseInOrderHelper(SpatialNode* node); //Inorder
-    void traversePreOrderHelper(SpatialNode* node); //Preorder
-    void traversePostOrderHelper(SpatialNode* node); //Postorder
-
-    void deleteTree(SpatialNode* node);
+    void deleteTree(SpatialNode *node);
 
 public:
-    //Constructor
+    // Constructor
     SpatialTree();
 
-    //Insertion
-    void insert(Probe* probe);
+    // Insertion
+    void insert(Probe *probe);
 
-    //Search probe by position
-    Probe* search(int x, int y);
+    // Search probe by position
+    Probe *search(int x, int y);
 
-    //Traverse
-    void traverseInOrder(); //Inorder
-    void traversePreOrder(); //Preorder
-    void traversePostOrder(); //Postorder
+    // Traverse
+    void traverseInOrder();   // Inorder
+    void traversePreOrder();  // Preorder
+    void traversePostOrder(); // Postorder
 
-    //Destructor
+    // Destructor
     ~SpatialTree();
 };
 

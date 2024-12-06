@@ -9,13 +9,13 @@ using namespace std;
 
 int main()
 {
-    string filename = "user.txt"; // select user.txt as our input file
-    login(filename);
-    // Arrays to store probe information
+    // string filename = "user.txt"; // select user.txt as our input file
+    // login(filename);
+    // // Arrays to store probe information
 
-    string probe = "probe.txt";
+    // string probe = "probe.txt";
     Galaxy stars;
-    loadProbeFromFile("probe.txt", stars);
+    // loadProbeFromFile("probe.txt", stars);
 
     int option;
 
@@ -30,19 +30,11 @@ int main()
     Probe a("Probe1", 1, 2, 3, 4, 5);
     Probe b("Probe2", 3, 3, 3, 3, 3);
     Galaxy stard;
-    stard.addExistingProbe(a);
-    stard.addExistingProbe(b);
-    stard.removeProbeFromLinkedList(3);
-    stard.addProbeToLinkedList(&a);
-    stard.addProbeToLinkedList(&b);
-    stard.removeProbeFromLinkedList(3); // Error present in delete
-    stard.dequeueProbe();
-    stard.enqueueProbe(&b);
-    stard.enqueueProbe(&a);
-    stard.dequeueProbe();
-    stard.pushProbe(&a);
-    stard.pushProbe(&b);
-    stard.popProbe();
+    // stard.getTree()->insert(&a);
+    // stard.getTree()->insert(&b);
+    // stard.getTree()->traverseInOrder();
+    // stard.getTree()->traversePreOrder();
+    // stard.getTree()->traversePostOrder();
     cout << "hi";
 
     // Loop the main menu into an infinite loop and diplay the list of options
