@@ -13,7 +13,7 @@ using namespace std;
 int main()
 {
     string filename = "user.txt"; // select user.txt as our input file
-    // login(filename);
+    login(filename);
     // Arrays to store probe information
 
     string probe = "probe.txt";
@@ -63,9 +63,9 @@ int main()
         cout << "15. Test template function spaceObjectManager functionality" << endl;
         cout << "16. Quit" << endl;
 
-        cout << "Enter your choice (1-13): ";
-        // cin >> option; // pass in value from keyboard
-        option = 13;
+        cout << "Enter your choice (1-16): ";
+        cin >> option; // pass in value from keyboard
+        // option = 13;
         cout << endl;
         // swap to different cases based on value passed into option
         switch (option)
